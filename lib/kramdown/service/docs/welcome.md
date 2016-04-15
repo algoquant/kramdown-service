@@ -1,8 +1,8 @@
-# Header 1
+# Heading 1
 
-## Header 2
+## Heading 2
 
-### Header 3
+### Heading 3
 
 Welcome to [Markdown](/). We hope you **really** enjoy using this.
 
