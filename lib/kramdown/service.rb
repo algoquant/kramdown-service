@@ -8,16 +8,14 @@
 #   run Kramdown::Service
 
 
+require 'json'
+
+
 # 3rd party libs/gems
 
 require 'sinatra/base'
 
 require 'kramdown'
-
-
-# require 'logutils'
-# require 'logutils/activerecord'
-
 
 # our own code
 
@@ -44,76 +42,50 @@ class Service < Sinatra::Base
   ##############################################
   # Controllers / Routing / Request Handlers
 
-  def welcome_markdown
-    ## todo: rotate welcome / use random number for index
-    # place markdown docs in server/docs
-     text = File.read( "#{KramdownService.root}/lib/markdown/service/docs/welcome.md" )
-     text
-  end
-
 
   get %r{/(service|services|srv|s)$} do
     erb :service
   end
 
-  get %r{/(note|notes|n)$} do
-    # for testing/debugging use copied sources 1:1 from markdown-notepad repo
-    redirect '/note.html'
-  end
-
   get %r{/(editor|edit|ed|e)$} do
     # NB: use editor for "ruby-enhanced" parts of note
     @welcome_markdown = welcome_markdown
-    @welcome_html = Kramdown::Document.new( @welcome_markdown ).to_html
+    @welcome_html     = Kramdown::Document.new( @welcome_markdown, input: 'GFM' ).to_html
 
     erb :editor
   end
 
   get '/' do
     @welcome_markdown = welcome_markdown
-    @welcome_html = Kramdown::Document.new( @welcome_markdown ).to_html
+    @welcome_html     = Kramdown::Document.new( @welcome_markdown, input: 'GFM' ).to_html
 
     erb :index
   end
 
+  # return hypertext (html)
+  get '/markdown' do
 
-  ## todo: use 3rd party services from markdown.yml (lets you configure)
-  #   e.g. http://johnmacfarlane.net/cgi-bin/pandoc-dingus?text=hi
+    text = params.delete('text')
+    to   = params.delete('to')   || 'html'  ## optional - default to html
+ 
+    ## todo: pretty print params / print class/type- is just a hash ??
 
+    ## assume all other params are kramdown options
 
-  def markdownify( params, opts={} )
-    pp params
-    text = params[:text]
-    lib  = params[:lib]   # optional
-    pp text
-    pp lib
-
-    Kramdown::Document.new( text, opts ).to_html
-  end
+    if ['latex','l','tex'].include?( to.downcase )
+      content_type 'text/latex'
+      text_to_latex( text, params )
+    else  ## assume html (default)
+      content_type 'text/html'
+      text_to_html( text, params )
+    end
+    
+ end
 
 
   # return babelmark2/dingus-style json
-  get '/markdown/dingus' do
-    html = markdownify( params )
-            
-    data = {
-      name:    'kramdown',
-      html:    html,
-      version: Kramdown::VERSION
-    }
-    
-    json_or_jsonp( data.to_json )
-  end
-
-
-  # return hypertext (html)
-  get '/markdown' do
-    content_type 'text/html'
-    markdownify( params )
-  end
-
-  # return html wrapped in json (follows babelfish2 dingus service api)
-  get '/dingus' do
+  # return html wrapped in json (follows babelmark2 dingus service api)
+  get '/babelmark' do
     html = markdownify( params )
             
     data = {
@@ -131,9 +103,42 @@ class Service < Sinatra::Base
   end
 
 
+private
+
+  def welcome_markdown
+    ## todo: rotate welcome / use random number for index
+    # place markdown docs in server/docs
+     text = File.read( "#{KramdownService.root}/lib/kramdown/service/docs/welcome.md" )
+     text
+  end
+
+
+  def text_to_html( text, params )
+    puts "text_to_html:"
+    pp params
+    pp text
+
+    ## fix - change params to opts - can be used "outside" too (just a "simple" helper)
+    ## add if opts/params  input empty (always use/default to GFM)
+    ##  check if input is std/standard/classic/kramdown than remove and keep empty !!!
+
+    opts={ input: 'GFM' }
+
+    Kramdown::Document.new( text, opts ).to_html
+  end
+
+  def text_to_latex( text, params )
+    puts "text_to_latex:"
+    pp params
+    pp text
+
+    opts={ input: 'GFM' }
+
+    Kramdown::Document.new( text, opts ).to_latex
+  end
+
 ### helper for json or jsonp response (depending on callback para)
 
-private
 def json_or_jsonp( json )
   callback = params.delete('callback')
   response = ''
