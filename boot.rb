@@ -1,9 +1,4 @@
 
-# ruby stdlibs
-
-require 'pp'
-
-
 
 ENV['RACK_ENV'] ||= 'development'
 
