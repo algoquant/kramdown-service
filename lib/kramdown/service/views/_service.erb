@@ -11,11 +11,16 @@
 </p>
 
 <ul>
- <li><b>text</b> - <em>Required</em> string - The Markdown text to render</li>
+ <li><b>text</b> - <em>Required</em> string - The markdown text to render</li>
+</ul>
+<ul>
+ <li><b>to</b> - <em>Optional</em> html|latex  string - The format to use</li>
 </ul>
 
+
+
 <p class='api'>
- Example: 
+ Example (HTML): 
  <code>GET 
      <a href='view-source:<%= url("/markdown?text=Hello+World!") %>'>
         /markdown?<span class='params'>text=<em>Hello+World!</em></span>
@@ -34,9 +39,33 @@ Content-Type: text/html
 </code></pre>
 
 
+
+
+<p class='api'>
+ Example (LaTeX): 
+ <code>GET 
+     <a href='view-source:<%= url("/markdown?text=Hello+World!&to=latex") %>'>
+        /markdown?<span class='params'>text=<em>Hello+World!</em></span>&amp;<span class='params'>to=latex</span>
+     </a>
+ </code>
+</p>
+
+<p>
+ Response:
+</p>
+
+<pre><code>Status: 200 OK
+Content-Type: text/latex
+
+Hello World
+</code></pre>
+
+
+
+
 <h4>Render Markdown (Babelmark2-Style)</h4>
 
-<pre><code>GET /dingus
+<pre><code>GET /babelmark
 </code></pre>
 
 <p>
@@ -44,14 +73,14 @@ Content-Type: text/html
 </p>
 
 <ul>
- <li><b>text</b> - <em>Required</em> string - The Markdown text to render</li>
+ <li><b>text</b> - <em>Required</em> string - The markdown text to render</li>
 </ul>
 
 
 <p class='api'>Example:
  <code>GET
-     <a href='<%= url("/dingus?text=Hello+World!") %>'>
-        /dingus?<span class='params'>text=<em>Hello+World!</em></span>
+     <a href='<%= url("/babelmark?text=Hello+World!") %>'>
+        /babelmark?<span class='params'>text=<em>Hello+World!</em></span>
      </a>
  </code>
 </p>

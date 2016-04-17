@@ -11,6 +11,7 @@
 Try the `markdown` HTTP (JSON) API running
 on Heroku [`trykramdown.herokuapp.com`](http://trykramdown.herokuapp.com).
 
+
 Example 1 - Converting to Hypertext (HTML):
 
     GET /markdown?text=Hello+World!
@@ -20,20 +21,11 @@ Example 1 - Converting to Hypertext (HTML):
 
 Example 2 - Converting to LaTeX:
 
-    GET /markdown?text=Hello+World!&format=latex
+    GET /markdown?text=Hello+World!&to=latex
     
     Hello World!
 
-<!-- todo/check:
-    - use format or output ??? for parameter
-  -->
 
-
-
-## Dependencies / Building Blocks
-
-[Markdown Note](https://github.com/writekit/markdown-note) - Another simple single-page, server-less Markdown editor
-in JavaScript & Hypertext.
 
 
 ## License

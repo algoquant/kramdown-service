@@ -14,7 +14,8 @@ Hoe.spec 'kramdown-service' do
   self.email   = 'wwwmake@googlegroups.com'
   
   self.extra_deps = [
-    ['kramdown'],
+    ['kramdown'],  ##  markdown converter
+    ['rouge'],     ## syntax highlighter
     ['sinatra'],
   ]
   

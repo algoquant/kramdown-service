@@ -10,6 +10,6 @@ gem 'kramdown-service'
 ###################
 # more libs
 
-gem 'textutils'
-gem 'props'
+gem 'rouge'    # syntax highlighter
+
 

@@ -44,40 +44,49 @@ class Service < Sinatra::Base
 
 
   get %r{/(service|services|srv|s)$} do
+    ## just a "live" docu page
     erb :service
   end
 
   get %r{/(editor|edit|ed|e)$} do
-    # NB: use editor for "ruby-enhanced" parts of note
-    @welcome_markdown = welcome_markdown
-    @welcome_html     = Kramdown::Document.new( @welcome_markdown, input: 'GFM' ).to_html
+    # note: allow optional params e.g. text and opts
+    ##  note: for now only html supported on get form/url params
+    text = params.delete('text') || welcome_markdown
+    to   = params.delete('to')   || 'html'  ## optional - default to html
+    opts = params_to_opts( params )
+
+    @welcome_markdown = text
+    @welcome_html     = text_to_html( text, opts )
 
     erb :editor
   end
 
   get '/' do
-    @welcome_markdown = welcome_markdown
-    @welcome_html     = Kramdown::Document.new( @welcome_markdown, input: 'GFM' ).to_html
+    # note: allow optional params e.g. text and opts
+    ##  note: for now only html supported on get form/url params
+    text = params.delete('text') || welcome_markdown
+    to   = params.delete('to')   || 'html'  ## optional - default to html
+    opts = params_to_opts( params )
+
+    @welcome_markdown = text
+    @welcome_html     = text_to_html( text, opts )
 
     erb :index
   end
 
-  # return hypertext (html)
-  get '/markdown' do
+  # return hypertext (html)    ## allow /markdown  or /m
+  get %r{/(markdown|m)$} do
 
     text = params.delete('text')
     to   = params.delete('to')   || 'html'  ## optional - default to html
+    opts = params_to_opts( params )
  
-    ## todo: pretty print params / print class/type- is just a hash ??
-
-    ## assume all other params are kramdown options
-
     if ['latex','l','tex'].include?( to.downcase )
       content_type 'text/latex'
-      text_to_latex( text, params )
+      text_to_latex( text, opts )
     else  ## assume html (default)
       content_type 'text/html'
-      text_to_html( text, params )
+      text_to_html( text, opts )
     end
     
  end
@@ -85,13 +94,15 @@ class Service < Sinatra::Base
 
   # return babelmark2/dingus-style json
   # return html wrapped in json (follows babelmark2 dingus service api)
+  #  note: defaults (uses) GFM - github-flavored markdown mode/input
+  #  note: only supports html for now (e.g. does NOT support to=html|latex option etc.)
   get '/babelmark' do
-    html = markdownify( params )
+    text = params.delete('text')
             
     data = {
-      name: 'kramdown',
-      html: html,
-      version: Kramdown::Version
+      name:   'kramdown',
+      html:    Kramdown::Document.new( text, input: 'GFM' ).to_html,
+      version: Kramdown::VERSION
     }
     
     json_or_jsonp( data.to_json )
@@ -112,30 +123,72 @@ private
      text
   end
 
-
-  def text_to_html( text, params )
-    puts "text_to_html:"
+  def params_to_opts( params )
+    ## convert (web form) params to kramdown (ruby) opts
+ 
+    puts "params : #{params.class.name}:"
     pp params
+       
+    opts = {}
+ 
+    ## map true/false strings to boolean
+    params.each do |k,v|
+      puts " k: >#{k}< : #{k.class.name}, v: >#{v}< : #{v.class.name}"
+      
+      ##  skip "built-in" sinatra "internal" params
+      ##   - todo - use splice and whitelist instead - why? why not?
+      next  if ['splat', 'captures'].include?( k )
+            
+      if v.is_a?( String ) && ['t', 'true'].include?( v.downcase ) 
+        opts[ k ] = true
+      elsif v.is_a?( String ) && ['f', 'false'].include?( v.downcase )
+        opts[ k ] = false
+      else
+        opts[ k ] = v
+      end
+    end  
+      
+    opts
+  end
+
+
+  def preprocess_opts( opts )
+    ### special case for input opt
+    ##     always default to gfm (github-flavored markdown) for now
+
+    input = opts.delete( 'input' ) || 'GFM'
+    if ['classic', 'std', 'standard', 'kramdown' ].include?( input.downcase )
+       ## skip; "pseudo" input options map to no (zero) standard/classic input
+    else
+      opts[ 'input' ] = input
+    end
+
+    puts "opts (preprocessed/effective):"
+    pp opts
+
+    opts
+  end
+
+  def text_to_html( text, opts={} )
+    puts "text_to_html:"
     pp text
+    pp opts
 
-    ## fix - change params to opts - can be used "outside" too (just a "simple" helper)
-    ## add if opts/params  input empty (always use/default to GFM)
-    ##  check if input is std/standard/classic/kramdown than remove and keep empty !!!
-
-    opts={ input: 'GFM' }
+    opts = preprocess_opts( opts )   ## defaults to GFM input etc.
 
     Kramdown::Document.new( text, opts ).to_html
   end
 
-  def text_to_latex( text, params )
+  def text_to_latex( text, opts={} )
     puts "text_to_latex:"
-    pp params
     pp text
+    pp opts
 
-    opts={ input: 'GFM' }
+    opts = preprocess_opts( opts )   ## defaults to GFM input etc.
 
     Kramdown::Document.new( text, opts ).to_latex
   end
+
 
 ### helper for json or jsonp response (depending on callback para)
 
