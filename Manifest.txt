@@ -7,13 +7,9 @@ lib/kramdown/service/docs/welcome.md
 lib/kramdown/service/public/css/markdown/note.css
 lib/kramdown/service/public/css/markdown/themes/basic.css
 lib/kramdown/service/public/i/dots-white.gif
+lib/kramdown/service/public/js/kramdown.js
 lib/kramdown/service/public/js/lib3rd/jquery-2.0.1.min.js
-lib/kramdown/service/public/js/lib3rd/pagedown.js
-lib/kramdown/service/public/js/lib3rd/showdown.min.js
-lib/kramdown/service/public/js/markdown.api.js
-lib/kramdown/service/public/js/markdown.lib.js
 lib/kramdown/service/public/js/markdown.note.js
-lib/kramdown/service/public/note.html
 lib/kramdown/service/public/style.css
 lib/kramdown/service/version.rb
 lib/kramdown/service/views/_about.erb
