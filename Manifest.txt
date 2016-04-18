@@ -27,3 +27,6 @@ lib/kramdown/service/views/editor.erb
 lib/kramdown/service/views/index.erb
 lib/kramdown/service/views/layout.erb
 lib/kramdown/service/views/service.erb
+test/helper.rb
+test/test_babelmark.rb
+test/test_markdown.rb

@@ -78,7 +78,7 @@ class Service < Sinatra::Base
   # return hypertext (html)    ## allow /markdown  or /m
   get %r{/(markdown|m)$} do
 
-    text = params.delete('text')
+    text = params.delete('text') || ''      ## if no text param supplied, use empty/blank string
     to   = params.delete('to')   || 'html'  ## optional - default to html
     opts = params_to_opts( params )
  
@@ -98,7 +98,7 @@ class Service < Sinatra::Base
   #  note: defaults (uses) GFM - github-flavored markdown mode/input
   #  note: only supports html for now (e.g. does NOT support to=html|latex option etc.)
   get '/babelmark' do
-    text = params.delete('text')
+    text = params.delete('text') || ''    ## if no text param supplied, use empty/blank string
             
     data = {
       name:   'kramdown',
