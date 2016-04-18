@@ -41,8 +41,8 @@ def test_latex_hello_world
 
   pp last_response.body
 
-  html = "Hello, World!\n\n"
-  assert_equal html, last_response.body
+  latex = "Hello, World!\n\n"
+  assert_equal latex, last_response.body
 end  # method test_latex_hello_world
 
 
