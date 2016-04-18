@@ -27,7 +27,7 @@ Step 1 - Start the server / service e.g.
 
     $ kramup
     
-Step 2 - Open up the editor page in your browser e.g. use http://localhost:4567
+Step 2 - Open up the editor page in your browser e.g. use `http://localhost:4567`.
 
 That's it. 
 
