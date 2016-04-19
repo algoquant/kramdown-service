@@ -1,14 +1,25 @@
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
+
 a, a:visited  {
-  color: #8B0000;
+  color: black;     /* was #8B0000; */
   text-decoration: none; }
 
   a:hover {
-    color:  #8B0000;
-    background-color: gold;
+    color: black; /* was #8B0000; */
     text-decoration: underline; }
+
+.header .title a,
+.header .title a:visited {
+  text-decoration: none;
+}
+
+.footer {
+  margin: 10px;
+}
+
+
 
 .params {
   color: green;

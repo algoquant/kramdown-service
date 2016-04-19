@@ -83,7 +83,7 @@ class Service < Sinatra::Base
     opts = params_to_opts( params )
  
     if ['latex','l','tex'].include?( to.downcase )
-      content_type 'text/latex'
+      content_type 'text/latex'     ### todo: check if latex content_type exists?
       text_to_latex( text, opts )
     else  ## assume html (default)
       content_type 'text/html'
@@ -107,6 +107,15 @@ class Service < Sinatra::Base
     }
     
     json_or_jsonp( data.to_json )
+  end
+
+
+  get %r{/(options|opts|o)$} do    ## for debugging/testing "dump" options  
+    content_type 'text/plain'
+  
+    opts = preprocess_opts( params_to_opts( params ))
+    doc = Kramdown::Document.new( '', opts )
+    doc.options.inspect
   end
 
 
@@ -156,13 +165,19 @@ private
   def preprocess_opts( opts )
     ### special case for input opt
     ##     always default to gfm (github-flavored markdown) for now
-
+    
     input = opts.delete( 'input' ) || 'GFM'
+
     if ['classic', 'std', 'standard', 'kramdown' ].include?( input.downcase )
        ## skip; "pseudo" input options map to no (zero) standard/classic input
+    elsif ['gfm'].include?( input.downcase )
+      ## note: GFM **MUST** be uppercase (gets converted to a matching ruby parser class)
+      opts[ 'input' ] = 'GFM'
+      ## in gfm mode (auto-)add hard_wrap = false unless set
+      opts['hard_wrap'] = false   if opts['hard_wrap'].nil?
     else
       opts[ 'input' ] = input
-    end
+    end    
 
     puts "opts (preprocessed/effective):"
     pp opts

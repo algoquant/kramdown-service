@@ -13,13 +13,10 @@ lib/kramdown/service/public/js/lib3rd/jquery-2.0.1.min.js
 lib/kramdown/service/public/js/markdown.note.js
 lib/kramdown/service/public/style.css
 lib/kramdown/service/version.rb
-lib/kramdown/service/views/_about.erb
 lib/kramdown/service/views/_debug.erb
 lib/kramdown/service/views/_editor.erb
 lib/kramdown/service/views/_editor_head.erb
 lib/kramdown/service/views/_editor_setup.erb
-lib/kramdown/service/views/_libs.erb
-lib/kramdown/service/views/_libs_service.erb
 lib/kramdown/service/views/_service.erb
 lib/kramdown/service/views/_version.erb
 lib/kramdown/service/views/debug.erb

@@ -11,6 +11,11 @@
     text-decoration: underline;
   }
 
+  .markdown a:hover {
+    background-color: gold;
+  }
+
+
   .markdown em {
     background-color: #fffeca;
     padding: 0 0.08em;

@@ -4,9 +4,10 @@
 
 ### Heading 3
 
-Welcome to [Markdown](/). We hope you **really** enjoy using this.
+Welcome to the [kramdown Online Editor](/). We hope you **really** enjoy using this.
 
-Just type some [markdown](http://en.wikipedia.org/wiki/Markdown) on the left and see it on the right. *Simple as that.*
+Just type some [markdown](http://en.wikipedia.org/wiki/Markdown)
+on the left and see it on the right. *Simple as that.*
 
 > Quote goes here.
 

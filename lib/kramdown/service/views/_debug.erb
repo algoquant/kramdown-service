@@ -25,3 +25,14 @@
   request.ip              <%= request.ip %>
 </pre>
 
+
+<h4>kramdown opts</h4>
+
+<%
+  doc = Kramdown::Document.new( '', preprocess_opts( params_to_opts( params )) )
+%>
+
+<pre>
+<%= JSON.pretty_generate( doc.options ) %>
+</pre>
+

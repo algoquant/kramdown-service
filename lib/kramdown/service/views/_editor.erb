@@ -1,6 +1,33 @@
 
 <%= erb :'_editor_setup' %>
 
+<table width="100%">
+<tr>
+  <td>
+
+
+    <span>
+      Use <select id='note-lib'></select>
+    </span> 
+
+    <br>
+    <a id='output-update' href='#'>[ Update ]</a>
+
+    <!-- nb: div will break/start new line -->
+    <div id='output-loading'></div>
+
+  </td>
+  
+  <td>
+    <div style="font-size: 80%;">
+      Options: <br>
+        <a id='input-toggle' href='#'>[ Use White Color Theme ]</a>
+        <a id='output-toggle' href='#'>[ Show HTML ]</a>
+    </div>
+  </td>
+<div>
+
+
 
 <table width='100%'>
  <colgroup>
@@ -23,25 +50,5 @@
       <textarea id='output-source' readonly='readonly'></textarea>
 
    </td>
- </tr>
- <tr>
-  <td>
-    <!-- first column -->
-
-    <span>
-      Use <select id='note-lib'></select>
-    </span>
-
-    <a id='output-update' href='#'>[ Update ]</a>
-    <a id='input-toggle' href='#'>[ Use White Color Theme ]</a>
-
-     <!-- nb: div will break/start new line -->
-     <div id='output-loading'></div>
-  </td>
-  <td style='vertical-align: top;'>
-     <!-- second column -->
-     <a id='output-toggle' href='#'>[ Show HTML ]</a>
-     
-  </td>
  </tr>
 </table>
