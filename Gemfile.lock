@@ -2,7 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     kramdown (1.10.0)
-    kramdown-service (0.1.0)
+    kramdown-service (0.3.0)
       kramdown
       rouge
       sinatra

@@ -1,5 +1,6 @@
 # TODOs
 
+- [ ] remove view-source: from sample links in service docu
 
 - [ ] check GFM if hard breaks are enforced by defaut? if yes, always add hard_breaks: false or something
 
